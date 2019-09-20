@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BASE_URL='https://ziglang.org/download/index.json'
+
+get_platform() {
+  local platform="$(uname | tr '[:upper:]' '[:lower:]')"
+
+  case "$platform" in
+    linux|freebsd)
+      ;;
+    darwin)
+      platform="macos"
+      ;;
+    *)
+      echo "Platform '${platform}' not supported!" >&2
+      exit 1
+      ;;
+  esac
+
+  echo -n $platform
+}
+
+get_arch() {
+  local arch=""
+
+  case "$(uname -m)" in
+    x86_64|amd64)
+      arch="x86_64"
+      ;;
+    *)
+      echo "Arch '$(uname -m)' not supported!" >&2
+      exit 1
+      ;;
+  esac
+
+  echo -n $arch
+}
+
+get_url() {
+  local platform=$1
+  local arch=$2
+  local version=$3
+
+  local url=""
+
+  if [ "master" = "$version" ]; then
+    url=$( \
+      curl -s $BASE_URL \
+      | sed -n 's/"tarball": "\(.*zig-'"$platform"'-'"$arch"'-[0-9\.]*+[0-9a-z]\{4,\}.*\)",/\1/p' \
+    )
+  else
+    url=$( \
+      curl -s $BASE_URL \
+      | sed -n 's/"tarball": "\(.*zig-'"$platform"'-'"$arch"'-'"$version"'\.tar.*\)",/\1/p' \
+    )
+  fi
+
+  echo -n $url
+}
+
+my_mktemp() {
+  local tempdir=""
+
+  if [ "linux" = "$1" ]; then
+    tempdir=$(mktemp -d asdf-zig.XXXX)
+  else
+    tempdir=$(mktemp -dt asdf-zig.XXXX)
+  fi
+
+  echo -n $tempdir
+}
+
+install_zig() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+
+  local platform=$(get_platform)
+  local arch=$(get_arch)
+  local tempdir=$(my_mktemp $platform)
+  local url=$(get_url $platform $arch $version)
+
+  curl "${url}" -o "${tempdir}/archive"
+  tar -C "$install_path" -xf "${tempdir}/archive" --strip-components=1
+
+  mkdir "${install_path}/bin"
+  ln -s "${install_path}/zig" "${install_path}/bin/zig"
+
+  rm -rf "${tempdir}"
+}
+
+install_zig $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
