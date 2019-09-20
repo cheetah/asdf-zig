@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+BASE_URL='https://ziglang.org/download/index.json'
+
+get_platform() {
+  local platform="$(uname | tr '[:upper:]' '[:lower:]')"
+
+  case "$platform" in
+    linux|freebsd)
+      ;;
+    darwin)
+      platform="macos"
+      ;;
+    *)
+      echo "Platform '${platform}' not supported!" >&2
+      exit 1
+      ;;
+  esac
+
+  echo -n $platform
+}
+
+get_arch() {
+  local arch=""
+
+  case "$(uname -m)" in
+    x86_64|amd64)
+      arch="x86_64"
+      ;;
+    *)
+      echo "Arch '$(uname -m)' not supported!" >&2
+      exit 1
+      ;;
+  esac
+
+  echo -n $arch
+}
