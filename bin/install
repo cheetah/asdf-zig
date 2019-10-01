@@ -13,7 +13,7 @@ get_url() {
   if [ "master" = "$version" ]; then
     url=$( \
       curl -s $BASE_URL \
-      | sed -n 's/"tarball": "\(.*\/builds\/.*zig-'"$platform"'-'"$arch"'-[0-9\.]*\.tar.*\)",/\1/p' \
+      | sed -n 's/"tarball": "\(.*\/builds\/.*zig-'"$platform"'-'"$arch"'-[0-9\.]*.*\)",/\1/p' \
     )
   else
     url=$( \
