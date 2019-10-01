@@ -10,7 +10,7 @@ get_versions() {
   local versions=""
   versions=$( \
     curl -s $BASE_URL \
-    | sed -n 's/"tarball": ".*zig-'"$platform"'-'"$arch"'-\([0-9\.]*\).tar.*",/\1/p' \
+    | sed -n 's/"tarball": ".*\/download\/.*\/zig-'"$platform"'-'"$arch"'-\([0-9\.]*\).tar.*",/\1/p' \
     | sed -e 's/^[[:space:]]*//' \
     | sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n \
     | tr '\n' ' ' \
