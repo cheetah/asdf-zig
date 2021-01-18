@@ -27,6 +27,9 @@ get_arch() {
     x86_64|amd64)
       arch="x86_64"
       ;;
+    aarch64)
+      arch="aarch64"
+      ;;
     *)
       echo "Arch '$(uname -m)' not supported!" >&2
       exit 1
