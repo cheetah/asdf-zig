@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cheetah/asdf-zig.svg?branch=master)](https://travis-ci.org/cheetah/asdf-zig)
+[![Build Status](https://github.com/cheetah/asdf-zig/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/cheetah/asdf-zig/actions/workflows/build.yml?query=branch%3Amaster)
 
 # asdf-zig
 [zig](https://ziglang.org/) plugin for [asdf version manager](https://github.com/asdf-vm/asdf)
