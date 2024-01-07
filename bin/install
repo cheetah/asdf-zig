@@ -15,6 +15,8 @@ get_url() {
       curl -s $BASE_URL \
       | sed -n 's/"tarball": "\(.*\/builds\/.*zig-'"$platform"'-'"$arch"'-[0-9\.]*.*\)",/\1/p' \
     )
+  elif [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+-dev.[0-9]+\+[0-9a-f]+$ ]]; then
+    url="https://ziglang.org/builds/zig-$platform-$arch-$version.tar.xz"
   else
     url=$( \
       curl -s $BASE_URL \
