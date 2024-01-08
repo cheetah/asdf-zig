@@ -21,6 +21,6 @@ jobs:
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: asdf-vm/actions/plugin-test@v2
+      - uses: asdf-vm/actions/plugin-test@v3
         with:
           command: 'zig version'
