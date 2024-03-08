@@ -31,9 +31,9 @@ my_mktemp() {
   local tempdir=""
 
   if [ "linux" = "$1" ]; then
-    tempdir=$(mktemp -d asdf-zig.XXXX)
+    tempdir=$(mktemp -d asdf-zig.XXXXXX)
   else
-    tempdir=$(mktemp -dt asdf-zig.XXXX)
+    tempdir=$(mktemp -dt asdf-zig.XXXXXX)
   fi
 
   echo -n $tempdir
