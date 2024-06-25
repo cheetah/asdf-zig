@@ -20,7 +20,7 @@ get_url() {
   else
     url=$( \
       curl -s $BASE_URL \
-      | sed -n 's/"tarball": "\(.*\/download\/.*zig-'"$platform"'-'"$arch"'-'"$version"'\.tar.*\)",/\1/p' \
+      | sed -E -n 's/"tarball": "(.*\/(download|builds)\/.*zig-'"$platform"'-'"$arch"'-'"$version"'\.tar.*)",/\1/p' \
     )
   fi
 
