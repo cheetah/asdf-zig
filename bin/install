@@ -13,16 +13,14 @@ get_url() {
   if [ "master" = "$version" ]; then
     url=$( \
       curl -s $BASE_URL \
-      | grep 'tarball' | grep 'dev' | grep $arch | grep $platform \
-      | sed -n 's/"tarball": "\(.*\/builds\/.*zig-.*-[0-9\.]*.*\)",/\1/p' \
+      | sed -n 's/"tarball": "\(.*\/builds\/.*zig-\('"$arch"'-'"$platform"'\|'"$platform"'-'"$arch"'\)-[0-9\.]*.*\)",/\1/p' \
     )
   elif [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+-dev.[0-9]+\+[0-9a-f]+$ ]]; then
-    url="https://ziglang.org/builds/zig-$platform-$arch-$version.tar.xz"
+    url="https://ziglang.org/builds/zig-$arch-$platform-$version.tar.xz"
   else
     url=$( \
       curl -s $BASE_URL \
-      | grep 'tarball' | grep -v 'dev' | grep $arch | grep $platform \
-      | sed -E -n 's/"tarball": "(.*\/(download|builds)\/.*zig-.*-'"$version"'\.tar.*)",/\1/p' \
+      | sed -n 's/"tarball": "\(.*\/\(download\|builds\)\/.*zig-\('"$arch"'-'"$platform"'\|'"$platform"'-'"$arch"'\)-'"$version"'\.tar.*\)",/\1/p' \
     )
   fi
 
